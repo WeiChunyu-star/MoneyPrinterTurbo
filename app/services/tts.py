@@ -1,4 +1,5 @@
 import requests
+from mutagen.mp3 import MP3
 from app.utils.AuthV3Util import addAuthParams
 
 
@@ -23,6 +24,8 @@ def createRequest(text, voice_name, audio_file):
     header = {'Content-Type': 'application/x-www-form-urlencoded'}
     res = doCall('https://openapi.youdao.com/ttsapi', header, data, 'post')
     saveFile(res, audio_file)
+    duration = get_mp3_duration(audio_file)
+    return duration
 
 
 def doCall(url, header, params, method):
@@ -41,6 +44,12 @@ def saveFile(res, PATH):
         print('save file path: ' + PATH)
     else:
         print(str(res.content, 'utf-8'))
+
+
+def get_mp3_duration(file_path):
+    audio = MP3(file_path)
+    return audio.info.length
+
 
 # # 网易有道智云语音合成服务api调用demo
 # # api接口: https://openapi.youdao.com/ttsapi
