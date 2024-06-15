@@ -8,7 +8,7 @@ from loguru import logger
 from app.config import config
 from app.models import const
 from app.models.schema import VideoParams, VideoConcatMode
-from app.services import llm, material, voice, video, subtitle
+from app.services import llm, material, voice, video, subtitle, tts
 from app.services import state as sm
 from app.utils import utils
 
@@ -84,7 +84,9 @@ def start(task_id, params: VideoParams):
 
     logger.info("\n\n## generating audio")
     audio_file = path.join(utils.task_dir(task_id), f"audio.mp3")
-    sub_maker = voice.tts(text=video_script, voice_name=voice_name, voice_file=audio_file)
+    # sub_maker = voice.tts(text=video_script, voice_name=voice_name, voice_file=audio_file)
+    sub_maker = tts.createRequest(text=video_script, voice_name='youxiaoxun', audio_file=audio_file)
+
     if sub_maker is None:
         sm.state.update_task(task_id, state=const.TASK_STATE_FAILED)
         logger.error(
@@ -95,8 +97,8 @@ def start(task_id, params: VideoParams):
         )
         return
 
-    audio_duration = voice.get_audio_duration(sub_maker)
-    audio_duration = math.ceil(audio_duration)
+    # audio_duration = voice.get_audio_duration(sub_maker)
+    # audio_duration = math.ceil(audio_duration)
 
     sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=30)
 
