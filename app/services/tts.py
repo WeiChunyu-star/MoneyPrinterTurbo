@@ -1,6 +1,6 @@
 import requests
 from mutagen.mp3 import MP3
-from app.utils.AuthV3Util import addAuthParams
+from app.services.AuthV3Util import addAuthParams
 
 
 # 您的应用ID

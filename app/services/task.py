@@ -100,7 +100,7 @@ def start(task_id, params: VideoParams):
     # audio_duration = voice.get_audio_duration(sub_maker)
     # audio_duration = math.ceil(audio_duration)
     audio_duration = math.ceil(sub_maker)
-    logger.info(f"udio_duration: {tudio_duration}")
+    logger.info(f"audio_duration: {audio_duration}")
 
     sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=30)
 
